@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-    .animation {
-        width: 100px;
-        height: 100px;
-        background-color: red;
-        animation-duration: 15s;
-        animation-name: example;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
+  <style>
+    canvas {
+      border: 1px solid black;
     }
-
-    @keyframes example {
-        0% {
-          transform: translateX(0px) scale(1) rotate(0deg);
-        }
-        50% {
-          transform: translateX(500px) scale(2) rotate(180deg);
-        }
-        100% {
-          transform: translateX(0px) scale(1) rotate(360deg);
-        }
-    }
-</style>
+  </style>
 </head>
 <body>
-    <div class="animation"></div>
+  <canvas id="myCanvas" width="400" height="400"></canvas>
+
+  <script>
+    // Установка холста и контекста
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Начальные координаты движения объекта
+    let x = 0;
+    let y = 0;
+
+    // Запуск анимации
+    function startAnimation() {
+      requestAnimationFrame(animate);
+    }
+
+    // Анимационная функция
+    function animate() {
+      // Очистка холста
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Обновление координат движения объекта
+      x += 1;
+      y += 1;
+
+      // Ограничение координат для движения
+      if (x > canvas.width) {
+        x = 0;
+      }
+      if (y > canvas.height) {
+        y = 0;
+      }
+
+      // Расчет значения масштаба и угла поворота
+      const scale = Math.abs(Math.sin((performance.now() / 1000) * 2));
+      const rotation = (performance.now() / 1000) * 360;
+
+      // Рисование объекта с масштабом и поворотом
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.scale(scale, scale);
+      ctx.fillStyle = 'red';
+      ctx.fillRect(-25, -25, 50, 50);
+      ctx.restore();
+
+      // Проверка времени
+      if (performance.now() < 15000) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    // Запуск анимации после загрузки страницы
+    window.onload = function () {
+      startAnimation();
+    };
+  </script>
 </body>
 </html>
