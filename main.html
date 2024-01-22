@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="400"></canvas>
+
+  <script>
+    // Установка холста и контекста
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Начальные координаты движения объекта
+    let x = 0;
+    let y = 0;
+
+    // Запуск анимации
+    function startAnimation() {
+      requestAnimationFrame(animate);
+    }
+
+    // Анимационная функция
+    function animate() {
+      // Очистка холста
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Обновление координат движения объекта
+      x += 1;
+      y += 1;
+
+      // Ограничение координат для движения
+      if (x > canvas.width) {
+        x = 0;
+      }
+      if (y > canvas.height) {
+        y = 0;
+      }
+
+      // Рисование объекта
+      ctx.fillStyle = 'red';
+      ctx.fillRect(x, y, 50, 50);
+
+      // Проверка времени
+      if (performance.now() < 15000) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    // Запуск анимации после загрузки страницы
+    window.onload = function() {
+      startAnimation();
+    };
+  </script>
+</body>
+</html>
